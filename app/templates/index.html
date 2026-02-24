@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Summarizer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    {% extends "base.html" %}
+    {% block content %}
+    
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-black py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Document Summarizer</h1>
+            <p class="text-xl md:text-2xl mb-8">Summarize your documents efficiently with AI-powered technology</p>
+            <div class="flex justify-center space-x-4">
+                <a href="/register" class="bg-white text-blue-700 hover:bg-blue-100 px-6 py-3 rounded-lg font-semibold transition duration-300">Register</a>
+                <a href="/login" class="bg-transparent border-2 border-white hover:bg-white hover:text-blue-700 px-6 py-3 rounded-lg font-semibold transition duration-300">Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">How Our Summarizer Works</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 rounded-full p-3 mr-4">
+                            <i class="fas fa-file-alt text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold">Extractive Summarization</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Our extractive summarization identifies and extracts key sentences from your original document to create a concise summary. This approach preserves the original wording while reducing content to essential information only.</p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-4">
+                        <li>Maintains original language and context</li>
+                        <li>Extracts the most informative sentences</li>
+                        <li>Perfect for factual documents and reports</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 rounded-full p-3 mr-4">
+                            <i class="fas fa-robot text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold">Abstractive Summarization</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Our abstractive summarization uses AI to understand content and generate new sentences that capture the essence of your document. This creates more natural, cohesive summaries with rephrased content.</p>
+                    <ul class="text-gray-600 list-disc pl-5 mb-4">
+                        <li>Creates new, concise phrasing</li>
+                        <li>Produces more readable, flowing summaries</li>
+                        <li>Ideal for articles, papers, and creative content</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- File Types -->
+        <div class="bg-blue-50 rounded-lg p-8 mb-16">
+            <h3 class="text-2xl font-semibold text-center mb-6">Multiple Input Options</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex items-center bg-white p-4 rounded-lg shadow">
+                    <div class="bg-blue-100 rounded-full p-3 mr-4">
+                        <i class="fas fa-file-alt text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold">Text File Upload</h4>
+                        <p class="text-green-600">Upload .txt or .pdf files directly for quick summarization</p>
+                    </div>
+                </div>
+                <div class="flex items-center bg-white p-4 rounded-lg shadow">
+                    <div class="bg-blue-100 rounded-full p-3 mr-4">
+                        <i class="fas fa-keyboard text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold">Direct Text Input</h4>
+                        <p class="text-gray-600">Paste or type text directly into our text field</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why It Matters Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Why Document Summarization Matters</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Benefit 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="text-blue-600 text-4xl mb-4 text-center">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Save Time</h3>
+                    <p class="text-gray-600">Extract key information quickly without reading entire documents. Perfect for busy professionals and students.</p>
+                </div>
+                
+                <!-- Benefit 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="text-blue-600 text-4xl mb-4 text-center">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Enhance Comprehension</h3>
+                    <p class="text-gray-600">Focus on core concepts and key points to improve understanding of complex topics.</p>
+                </div>
+                
+                <!-- Benefit 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="text-blue-600 text-4xl mb-4 text-center">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">Increase Productivity</h3>
+                    <p class="text-gray-600">Process more information in less time, helping you make decisions faster and work more efficiently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section with Dropdowns -->
+    <section class="py-16 container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        
+        <div class="max-w-3xl mx-auto">
+            <!-- Search Box -->
+            <div class="mb-8">
+                <div class="relative">
+                    <input type="text" id="faq-search" class="w-full py-3 px-4 pl-12 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search FAQs...">
+                    <div class="absolute left-4 top-3.5 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Items -->
+            <div id="faq-container">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item mb-4 border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="faq-question cursor-pointer bg-white px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">What's the difference between extractive and abstractive summarization?</h3>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer bg-gray-50 px-6 py-4 border-t border-gray-200 hidden">
+                        <p class="text-gray-600">Extractive summarization pulls out existing sentences from your text, while abstractive summarization generates new sentences that capture the meaning of your content. Extractive maintains original phrasing while abstractive creates entirely new text.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="faq-item mb-4 border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="faq-question cursor-pointer bg-white px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">How long does the summarization process take?</h3>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer bg-gray-50 px-6 py-4 border-t border-gray-200 hidden">
+                        <p class="text-gray-600">Most documents are summarized within seconds, though larger files may take slightly longer to process.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="faq-item mb-4 border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="faq-question cursor-pointer bg-white px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">How accurate are the summaries?</h3>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer bg-gray-50 px-6 py-4 border-t border-gray-200 hidden">
+                        <p class="text-gray-600">Our AI models have been trained on millions of documents to ensure high-quality summaries that capture the essential information of your text. While no automated system is perfect, our algorithms consistently produce summaries that maintain the key points and context of the original content.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 6 -->
+                <div class="faq-item mb-4 border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="faq-question cursor-pointer bg-white px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">What file formats are supported?</h3>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer bg-gray-50 px-6 py-4 border-t border-gray-200 hidden">
+                        <p class="text-gray-600">Currently, we support plain text (.txt) files for direct upload. You can also paste text directly from any source into our text input field regardless of the original format.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 7 -->
+                <div class="faq-item mb-4 border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="faq-question cursor-pointer bg-white px-6 py-4 flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Is my data secure and private?</h3>
+                        <i class="fas fa-chevron-down text-blue-600 transition-transform duration-300"></i>
+                    </div>
+                    <div class="faq-answer bg-gray-50 px-6 py-4 border-t border-gray-200 hidden">
+                        <p class="text-gray-600">Yes, we take data privacy very seriously. Your documents are processed securely, and we do not store the content of your documents beyond the time needed for processing.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="no-results" class="hidden text-center py-8">
+                <p class="text-gray-500 text-lg">No FAQs match your search. Try different keywords.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-black">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to start summarizing?</h2>
+            <p class="text-xl mb-8">Join thousands of professionals who save time with our AI-powered document summarizer.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="/register" class="bg-white text-blue-700 hover:bg-blue-100 px-6 py-3 rounded-lg font-semibold transition duration-300">Register Now</a>
+                <a href="/login" class="bg-transparent border-2 border-white hover:bg-white hover:text-blue-700 px-6 py-3 rounded-lg font-semibold transition duration-300">Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copyright section -->
+    <div class="bg-gray-100 py-4 text-center">
+        <p class="text-gray-600">© 2025 Document Summarizer. Built with ❤️ using Flask.</p>
+    </div>
+
+    <!-- JavaScript for FAQ functionality -->
+    <script>
+        $(document).ready(function() {
+            // Toggle FAQ answers
+            $('.faq-question').click(function() {
+                $(this).find('i').toggleClass('transform rotate-180');
+                $(this).next('.faq-answer').slideToggle(200);
+            });
+            
+            // Search functionality
+            $('#faq-search').on('input', function() {
+                let searchTerm = $(this).val().toLowerCase();
+                let foundItems = 0;
+                
+                $('.faq-item').each(function() {
+                    let questionText = $(this).find('.faq-question h3').text().toLowerCase();
+                    let answerText = $(this).find('.faq-answer p').text().toLowerCase();
+                    
+                    if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                        $(this).show();
+                        foundItems++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                
+                // Show/hide "no results" message
+                if (foundItems === 0 && searchTerm !== '') {
+                    $('#no-results').removeClass('hidden');
+                } else {
+                    $('#no-results').addClass('hidden');
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

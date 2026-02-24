@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #chat-container {
+            width: 400px;
+            margin: 60px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        #chat-container h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        
+        #summary-display {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+        }
+        
+        .user-message,
+        .bot-message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background-color: #d1e7ff;
+            text-align: right;
+            color: #0d6efd;
+        }
+        
+        .bot-message {
+            background-color: #d4edda;
+            text-align: left;
+            color: #155724;
+        }
+        
+        input[type="text"] {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #messages::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="chat-container">
+        <h2>Chatbot</h2>
+
+        <!-- Display latest summary -->
+        <div id="summary-display">
+            <strong>Latest Summary:</strong>
+            <p>{{ summary_content }}</p>
+        </div>
+
+        <div id="messages"></div>
+        <div style="display: flex;">
+            <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off">
+            <button onclick="sendMessage()">Ask</button>
+        </div>
+
+
+    </div>
+
+ 
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') return;
+
+            // Display user message
+            const userMessage = `<div class="user-message">${userInput}</div>`;
+            document.getElementById('messages').innerHTML += userMessage;
+
+            // Clear input field
+            document.getElementById('user-input').value = '';
+
+            // Send user input to server
+            fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_input: userInput
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessage = `<div class="bot-message">${data.response}</div>`;
+                    document.getElementById('messages').innerHTML += botMessage;
+                    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</body>
+
+</html>

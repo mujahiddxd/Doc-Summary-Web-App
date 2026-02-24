@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body style="background: linear-gradient(to right, #6a11cb, #2575fc); padding: 40px 0; min-height: 100vh;">
+    <div class="container text-white">
+
+        <!-- Page Title -->
+        <h1 class="display-5 fw-bold text-center mb-4">Let's Summarize Some Text or Documents</h1>
+
+        <!-- Chatbot and Logout Buttons -->
+        <div class="d-flex justify-content-between mb-4">
+            <a href="{{ url_for('chat') }}" class="btn btn-light btn-sm">💬 Chat with Our Assistant</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">🚪 Logout</a>
+        </div>
+
+        <!-- Help Section -->
+        <div class="card mb-5 p-4" style="background-color: #ffffff; color: #333; border-radius: 15px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+            <h2 class="mb-3">🔍 How does this work?</h2>
+            <p>
+                You can either enter text manually or upload a <code>.txt</code> or <code>.pdf</code> document to generate a summary.
+                This app allows you to choose between <code>extractive</code> and <code>abstractive</code> summarization methods.
+                You may also use the prompt box to further customize your output.
+            </p>
+        </div>
+
+        <!-- Input Form -->
+        <form action="/index" method="post" enctype="multipart/form-data" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="card p-4 mb-4" style="border-radius: 15px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <h3 class="mb-3 text-dark">📝 Enter Text or Upload a File</h3>
+                <div class="form-group mb-3">
+                    {{ form.text(class="form-control", rows="10", placeholder="Enter your text here...", style="border-radius: 10px;") }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="file" class="form-label" style="color: #333;">📄 Upload a Text or PDF File (.txt, .pdf):</label>
+                    <input type="file" name="file" id="file" accept=".txt, .pdf" class="form-control">
+                </div>
+
+                <h4 class="mt-4 mb-2 text-dark">🧠 Select Summary Type:</h4>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" id="extractive" name="summary_type" value="extractive" checked>
+                    <label class="form-check-label text-dark" for="extractive">Extractive Summary</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" id="abstractive" name="summary_type" value="abstractive">
+                    <label class="form-check-label text-dark" for="abstractive">Abstractive Summary</label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-4">
+                    {{ form.submit(class="btn btn-primary btn-lg px-5 py-2") }}
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>
+
+{% endblock %}

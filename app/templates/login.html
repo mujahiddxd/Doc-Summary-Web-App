@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body style="background: linear-gradient(to right, #6a11cb, #2575fc); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+
+    <!-- Top Progress Bar (Fixed) -->
+    <div id="progressBarContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 10px; background-color: rgba(0,0,0,0.1); z-index: 9999; display: none;">
+        <div id="progressBar" style="width: 0%; height: 100%; background-color: #00e5ff; transition: width 0.2s; position: absolute;"></div>
+        <span id="progressText" style="position: absolute; width: 100%; text-align: center; color: white; font-weight: bold; font-size: 12px; top: 50%; transform: translateY(-50%); z-index: 1;">Loading...</span>
+    </div>
+
+    <div class="container">
+        <div class="card p-4" style="border: none; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); background-color: #ffffff;">
+            <h2 class="mb-4 text-center" style="font-family: 'Segoe UI', sans-serif; color: #333;">Login</h2>
+            <form id="loginForm" method="POST">
+                {{ form.hidden_tag() }}
+
+                <!-- Email Input -->
+                <div class="form-group">
+                    {{ form.email.label(class="form-label", style="font-weight: 600;") }}
+                    {{ form.email(class="form-control", placeholder="Enter your email", id="email") }}
+                    <small id="emailError" style="color: red; display: none;">Please enter a valid email address.</small>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    {{ form.password.label(class="form-label", style="font-weight: 600;") }}
+                    {{ form.password(class="form-control", placeholder="Enter your password", id="password") }}
+                    <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters long.</small>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="mb-0">Don't have an account? <a href="/register" style="color: #2575fc;">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    const loadingMessages = [
+        "Loading...",
+        "Just a moment...",
+        "Hang tight...",
+        "Logging in...",
+        "Redirecting..."
+    ];
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        let valid = true;
+
+        if (!emailRegex.test(email)) {
+            document.getElementById("emailError").style.display = "block";
+            valid = false;
+        } else {
+            document.getElementById("emailError").style.display = "none";
+        }
+
+        if (password.length < 8) {
+            document.getElementById("passwordError").style.display = "block";
+            valid = false;
+        } else {
+            document.getElementById("passwordError").style.display = "none";
+        }
+
+        if (valid) {
+            progressBarContainer.style.display = "block";
+
+            let width = 0;
+            let messageIndex = 0;
+            
+            const messageInterval = setInterval(() => {
+                progressText.textContent = loadingMessages[messageIndex % loadingMessages.length];
+                messageIndex++;
+            }, 1000);
+
+            const progressInterval = setInterval(() => {
+                if (width < 90) {  // Only go to 90% while waiting for redirect
+                    width += 0.5 + Math.random() * 1.5;
+                    progressBar.style.width = width + "%";
+                }
+            }, 50);
+            
+            // Prepare form data
+            const formData = new FormData(form);
+            
+            // Send form data via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                // When response is received, complete the progress bar
+                clearInterval(progressInterval);
+                clearInterval(messageInterval);
+                progressBar.style.width = "100%";
+                progressText.textContent = "Done!";
+                
+                // Follow the redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = response.url;
+                }, 300);
+                
+                return response.json();
+            })
+            .catch(error => {
+                // If there's an error, still submit the form normally
+                clearInterval(progressInterval);
+                clearInterval(messageInterval);
+                progressBar.style.width = "100%";
+                progressText.textContent = "Submitting...";
+                setTimeout(() => {
+                    form.submit();  // Fallback to normal form submission
+                }, 300);
+            });
+        }
+    });
+</script>
+
+{% endblock %}

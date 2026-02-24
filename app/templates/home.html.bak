@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="display-5 fw-bold text-white">Let's Summarize Some Text or Documents</h1>
+
+<div class="help-text">
+    <h2>How does this work?</h2>
+    You can either enter text manually or upload a document (.pdf, .doc, .docx, etc.) to generate a summary. The application allows you to choose between 
+    <code>extractive</code> or <code>abstractive</code> summarization methods. Use the prompt box to further customize the summary (e.g., "Make it more concise" or "Add more details").
+</div>
+
+<!-- Logout Button -->
+<div style="text-align: right;">
+    <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+</div>
+
+<form action="/index" method="post" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+
+    <h3>Enter Text</h3>
+    <p>
+        {{ form.text(cols=100, rows=20, placeholder='Enter your text here...') }}
+    </p>
+
+    <h3>Select Summary Type:</h3>
+    <p>
+        <input type="radio" id="extractive" name="summary_type" value="extractive" checked>
+        <label for="extractive">Extractive Summary</label><br>
+        <input type="radio" id="abstractive" name="summary_type" value="abstractive">
+        <label for="abstractive">Abstractive Summary</label>
+    </p>
+
+    <h3>Number of Sentences for Extractive Summaries:</h3>
+    <p>
+        {{ form.num_sentences }}
+    </p>
+
+    <p>
+        {{ form.submit(class="btn btn-primary btn-lg px-4 gap-3") }}
+    </p>
+</form>
+{% endblock %}
