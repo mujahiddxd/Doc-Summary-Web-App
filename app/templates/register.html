@@ -1,56 +1,79 @@
 {% extends "base.html" %}
 {% block content %}
-
-<body style="background: linear-gradient(to right, #6a11cb, #2575fc); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
-
-    <div class="container">
-        <div class="card p-4" style="border: none; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); background-color: #ffffff;">
-            <h2 class="mb-4 text-center" style="font-family: 'Segoe UI', sans-serif; color: #333;">Register</h2>
-            <form method="POST">
-                {{ form.hidden_tag() }}
-
-                <div class="form-group">
-                    {{ form.email.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.email(class="form-control", placeholder="Enter your email") }}
-                    {% if form.email.errors %}
-                        <ul class="errors">
-                            {% for error in form.email.errors %}
-                                <li style="color: red;">{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.password.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.password(class="form-control", placeholder="Create a password") }}
-                </div>
-
-                <div class="form-group">
-                    {{ form.confirm_password.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
-                </div>
-
-                <div class="form-group">
-                    {{ form.age.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.age(class="form-control", placeholder="Enter your age") }}
-                </div>
-
-                <div class="form-group mt-4">
-                    {{ form.submit(class="btn btn-primary btn-block") }}
-                </div>
-            </form>
-
-            <div class="text-center mt-3">
-                <p class="mb-0">Already have an account? <a href="/login" style="color: #2575fc;">Login here</a></p>
-            </div>
-
-            <div class="text-center mt-3">
-                <a href="/" style="color: #2575fc;">Back</a>
-            </div>
-        </div>
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+  <div class="glass-panel" style="width: 100%; max-width: 450px;">
+    
+    <div class="mb-4">
+        <a href="/" class="btn btn-secondary btn-sm" style="padding: 6px 12px;"><i class="fas fa-arrow-left"></i> Back</a>
     </div>
 
-</body>
+    <h2 class="text-center mb-4 text-gradient">Create Account</h2>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
 
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-envelope" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.email(class="form-control", placeholder="Enter your email", style="padding-left: 45px;") }}
+            </div>
+            {% if form.email.errors %}
+                <div class="error-text">
+                    {% for error in form.email.errors %}{{ error }}<br>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-lock" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.password(class="form-control", placeholder="Create a password", style="padding-left: 45px;") }}
+            </div>
+            {% if form.password.errors %}
+                <div class="error-text">
+                    {% for error in form.password.errors %}{{ error }}<br>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm_password.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-check-circle" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.confirm_password(class="form-control", placeholder="Confirm your password", style="padding-left: 45px;") }}
+            </div>
+            {% if form.confirm_password.errors %}
+                <div class="error-text">
+                    {% for error in form.confirm_password.errors %}{{ error }}<br>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.age.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-user" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.age(class="form-control", placeholder="Enter your age", style="padding-left: 45px;") }}
+            </div>
+            {% if form.age.errors %}
+                <div class="error-text">
+                    {% for error in form.age.errors %}{{ error }}<br>{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary btn-block">
+                <span>Register</span> <i class="fas fa-user-plus"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <p class="mb-0">Already have an account? <a href="/login" class="link">Login here</a></p>
+    </div>
+  </div>
+</div>
 {% endblock %}

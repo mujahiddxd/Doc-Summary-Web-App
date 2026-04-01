@@ -1,44 +1,51 @@
 {% extends "base.html" %}
 {% block content %}
 
-<body style="background: linear-gradient(135deg, #6dd5ed, #2193b0); min-height: 100vh; padding: 40px 0;">
-    <div class="container">
+<div class="top-nav">
+    <a href="/index" class="logo">
+        <i class="fas fa-layer-group"></i> AI Summarizer
+    </a>
+    <a href="/index" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Home</a>
+</div>
 
-        <!-- Summary Display & Edit Section -->
-        <div class="card mb-5 p-4" style="border: none; border-radius: 15px; box-shadow: 0 6px 18px rgba(0,0,0,0.2); background-color: #ffffffee;">
-            <h1 class="text-center mb-3" style="font-family: 'Segoe UI', sans-serif; color: #222;">Here's your summary!</h1>
-            <hr />
-
-            <form method="POST" action="/save_summary">
-                <div class="form-group">
-                    <label for="edited_summary" class="mb-2"><h5>Edit your summary:</h5></label>
-                    <textarea class="form-control" id="edited_summary" name="edited_summary" rows="5" style="border-radius: 10px;">{{ text }}</textarea>
-                </div>
-
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5 py-2">💾 Save Summary</button>
-                </div>
-            </form>
+<div class="report-card">
+    <div class="glass-panel mb-4">
+        <div class="d-flex justify-between align-center mb-4">
+            <h2 class="text-gradient" style="margin: 0;">Analysis Results</h2>
+            <span style="background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">{{ session.get('summary_type', 'summary') | capitalize }} Mode</span>
         </div>
-
-        <!-- Original Text Section with Opacity Indicators -->
-        <div class="card p-4" style="border: none; border-radius: 15px; box-shadow: 0 6px 18px rgba(0,0,0,0.2); background-color: #ffffffee;">
-            <h2 class="text-center mb-3" style="font-family: 'Segoe UI', sans-serif;">Here's your original text!</h2>
-            <p class="text-muted text-center mb-4">The higher the opacity, the more important a sentence is. The lower the opacity, the less important the sentence is.</p>
-
-            <div style="line-height: 1.8; text-align: left;">
-                {% for sent, weight in sents %}
-                    <span style="opacity: {{ weight }}; display: block; transition: all 0.3s ease;">{{ sent }}</span>
-                {% endfor %}
+        
+        <form method="POST" action="/save_summary">
+            <div class="form-group">
+                <label for="edited_summary" class="form-label">Generated Summary</label>
+                <textarea class="form-control summary-text" id="edited_summary" name="edited_summary" rows="6">{{ text }}</textarea>
             </div>
-        </div>
 
-        <!-- Back Link -->
-        <div class="text-center mt-4">
-            <a href="/index" class="btn btn-outline-light mt-3">⬅ Go Back</a>
-        </div>
-
+            <div class="d-flex justify-between align-center mt-4">
+                <a href="{{ url_for('chat') }}" class="btn btn-secondary">
+                    <i class="fas fa-comments"></i> Ask Questions
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save to Profile
+                </button>
+            </div>
+        </form>
     </div>
-</body>
 
+    {% if sents %}
+    <div class="glass-panel" style="background: rgba(15, 23, 42, 0.4);">
+        <h3 style="font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-search text-muted"></i> Source Analysis Map
+        </h3>
+        <p style="font-size: 0.9rem;">The opacity of sentences below represents their statistical importance in the original text.</p>
+        <hr>
+        
+        <div style="background: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 12px; max-height: 400px; overflow-y: auto;">
+            {% for sent, weight in sents %}
+                <span class="opacity-sentence" style="opacity: {{ weight }};">{{ sent }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,46 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+  
+  <!-- Top Progress Bar (Fixed) -->
+  <div id="progressBarContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 6px; background-color: rgba(255,255,255,0.1); z-index: 9999; display: none;">
+      <div id="progressBar" style="width: 0%; height: 100%; background: var(--accent-gradient); transition: width 0.2s; position: absolute;"></div>
+      <span id="progressText" style="position: absolute; width: 100%; text-align: center; color: white; font-weight: 600; font-size: 11px; top: 12px; z-index: 1;">Loading...</span>
+  </div>
 
-<body style="background: linear-gradient(to right, #6a11cb, #2575fc); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;">
+  <div class="glass-panel" style="width: 100%; max-width: 450px;">
+    <h2 class="text-center mb-4 text-gradient">Welcome Back</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-3" style="padding: 10px; border-radius: 8px; background: {% if category == 'success' %}rgba(16, 185, 129, 0.2){% else %}rgba(239, 68, 68, 0.2){% endif %}; color: {% if category == 'success' %}#34d399{% else %}#f87171{% endif %}; text-align: center; font-size: 0.9rem;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-    <!-- Top Progress Bar (Fixed) -->
-    <div id="progressBarContainer" style="position: fixed; top: 0; left: 0; width: 100%; height: 10px; background-color: rgba(0,0,0,0.1); z-index: 9999; display: none;">
-        <div id="progressBar" style="width: 0%; height: 100%; background-color: #00e5ff; transition: width 0.2s; position: absolute;"></div>
-        <span id="progressText" style="position: absolute; width: 100%; text-align: center; color: white; font-weight: bold; font-size: 12px; top: 50%; transform: translateY(-50%); z-index: 1;">Loading...</span>
-    </div>
+    <form id="loginForm" method="POST">
+        {{ form.hidden_tag() }}
 
-    <div class="container">
-        <div class="card p-4" style="border: none; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); background-color: #ffffff;">
-            <h2 class="mb-4 text-center" style="font-family: 'Segoe UI', sans-serif; color: #333;">Login</h2>
-            <form id="loginForm" method="POST">
-                {{ form.hidden_tag() }}
-
-                <!-- Email Input -->
-                <div class="form-group">
-                    {{ form.email.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.email(class="form-control", placeholder="Enter your email", id="email") }}
-                    <small id="emailError" style="color: red; display: none;">Please enter a valid email address.</small>
-                </div>
-
-                <!-- Password Input -->
-                <div class="form-group">
-                    {{ form.password.label(class="form-label", style="font-weight: 600;") }}
-                    {{ form.password(class="form-control", placeholder="Enter your password", id="password") }}
-                    <small id="passwordError" style="color: red; display: none;">Password must be at least 8 characters long.</small>
-                </div>
-
-                <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </div>
-            </form>
-
-            <div class="text-center mt-3">
-                <p class="mb-0">Don't have an account? <a href="/register" style="color: #2575fc;">Register here</a></p>
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-envelope" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.email(class="form-control", placeholder="Enter your email", id="email", style="padding-left: 45px;") }}
             </div>
+            <small id="emailError" class="error-text" style="display: none;">Please enter a valid email address.</small>
         </div>
-    </div>
 
-</body>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            <div style="position: relative;">
+                <i class="fas fa-lock" style="position: absolute; top: 16px; left: 16px; color: #64748b;"></i>
+                {{ form.password(class="form-control", placeholder="Enter your password", id="password", style="padding-left: 45px;") }}
+            </div>
+            <small id="passwordError" class="error-text" style="display: none;">Password must be at least 8 characters.</small>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-primary btn-block">
+                <span>Login</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <p class="mb-0">Don't have an account? <a href="/register" class="link">Register here</a></p>
+    </div>
+  </div>
+</div>
 
 <script>
     const form = document.getElementById('loginForm');
@@ -49,9 +62,8 @@
     const progressText = document.getElementById('progressText');
 
     const loadingMessages = [
-        "Loading...",
-        "Just a moment...",
-        "Hang tight...",
+        "Analyzing credentials...",
+        "Authenticating...",
         "Logging in...",
         "Redirecting..."
     ];
@@ -88,52 +100,41 @@
             const messageInterval = setInterval(() => {
                 progressText.textContent = loadingMessages[messageIndex % loadingMessages.length];
                 messageIndex++;
-            }, 1000);
+            }, 800);
 
             const progressInterval = setInterval(() => {
-                if (width < 90) {  // Only go to 90% while waiting for redirect
-                    width += 0.5 + Math.random() * 1.5;
+                if (width < 90) { 
+                    width += 0.5 + Math.random() * 2;
                     progressBar.style.width = width + "%";
                 }
             }, 50);
             
-            // Prepare form data
             const formData = new FormData(form);
             
-            // Send form data via AJAX
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             })
             .then(response => {
-                // When response is received, complete the progress bar
                 clearInterval(progressInterval);
                 clearInterval(messageInterval);
                 progressBar.style.width = "100%";
-                progressText.textContent = "Done!";
+                progressText.textContent = "Welcome!";
                 
-                // Follow the redirect after a short delay
                 setTimeout(() => {
                     window.location.href = response.url;
                 }, 300);
-                
-                return response.json();
             })
             .catch(error => {
-                // If there's an error, still submit the form normally
                 clearInterval(progressInterval);
                 clearInterval(messageInterval);
                 progressBar.style.width = "100%";
-                progressText.textContent = "Submitting...";
                 setTimeout(() => {
-                    form.submit();  // Fallback to normal form submission
+                    form.submit();
                 }, 300);
             });
         }
     });
 </script>
-
 {% endblock %}
